@@ -3,7 +3,7 @@
 #
 # https://docs.italia.it/italia/piano-triennale-ict/lg-modellointeroperabilita-docs/it/bozza/doc/profili-di-interazione/regole-comuni-rest-soap.html#raccomandazioni-tecniche-per-rest
 #
-extends: spectral:oas
+# extends: spectral:oas
 rules:
   servers-description:
     description: Servers must have a description.
@@ -68,13 +68,15 @@ rules:
     - oas3
     severity: warn
     recommended: true
-    # given: $..[?"@.headers"]['headers']
     given: >-
       $.[responses][*]['headers']
     then:
       field: X-RateLimit-Limit
       function: truthy
 
+  #
+  # Problem JSON
+  #
   use-problem-json:
     description: |-
       APIs should use Problem json for errors.
@@ -91,6 +93,37 @@ rules:
     then:
       field: Problem
       function: truthy
+  use-problem-json-for-default:
+    description: |-
+      APIs should use Problem json for errors.
+      See https://docs.italia.it/italia/piano-triennale-ict/lg-modellointeroperabilita-docs/it/bozza/doc/profili-di-interazione/regole-comuni-rest-soap.html#usare-lo-schema-problem-json-per-le-risposte-di-errore
+    message: |-
+      Use media-type application/problem+json for default responses (errors)
+      and the associate schema.
+    formats:
+    - oas3
+    severity: error
+    recommended: true
+    given: >-
+      $.[responses][default]
+    then:
+      field: 'application/problem+json'
+      function: truthy
+
+
+  response-with-json-object:
+    message: |-
+      Responses must use json objects
+    severity: warn
+    recommended: true
+    given: >-
+      $.[responses][*][content][*][schema]
+    then:
+      field: type
+      function: pattern
+      functionOptions:
+        match: object
+
   patch-media-type:
     description: |-
       application/json is not an appropriate media-type for PATCH.
@@ -111,6 +144,7 @@ rules:
     description: Number must specify a format.
     message: >-
       Schema of type number must specify a format.
+      See https://docs.italia.it/italia/piano-triennale-ict/lg-modellointeroperabilita-docs/it/bozza/doc/profili-di-interazione/regole-comuni-rest-soap.html#definire-format-quando-si-usano-i-tipi-number-ed-integer
     formats:
     - oas3
     severity: error
@@ -134,4 +168,3 @@ rules:
     then:
       field: format
       function: truthy
-
