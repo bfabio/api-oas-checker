@@ -7,7 +7,6 @@ rules:
     then:
       field: description
       function: truthy
-
   servers-use-https:
     description: Servers must use https
     given: $.servers[*]
@@ -28,8 +27,6 @@ rules:
     then:
       field: "info.x-summary"
       function: truthy
-
-
   has-x-api-id:
     description: |
       API must have an unique identifier in x-api-id
@@ -52,18 +49,3 @@ rules:
       function: pattern
       functionOptions:
         match: "^(\/[a-z0-9-.]+|\/{[a-zA-Z0-9_]+})+$"
-  rate-limit-header:
-    description: |-
-      APIs should use ratelimit headers.
-      See https://docs.italia.it/italia/piano-triennale-ict/lg-modellointeroperabilita-docs/it/bozza/doc/profili-di-interazione/robustezza.html#segnalare-raggiunti-limiti-di-utilizzo
-    message: |-
-      {{property}} does not have ratelimit {{error}}
-    formats:
-    - oas3
-    severity: warn
-    recommended: true
-    given: >-
-      $.[responses][*]['headers']
-    then:
-      field: X-RateLimit-Limit
-      function: truthy

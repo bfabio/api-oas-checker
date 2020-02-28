@@ -31,8 +31,6 @@ rules:
     then:
       field: 'application/problem+json'
       function: truthy
-
-
   response-with-json-object:
     message: |-
       Responses must use json objects
