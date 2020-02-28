@@ -28,7 +28,9 @@ bundle/js/bootstrap-italia.min.js:
 	unzip -d bundle bootstrap-italia.zip
 
 # Merge all rules into .spectral.yml
-rules:
+rules: .spectral.yml
+
+.spectral.yml: ./rules
 	cat ./rules/rules-template.yml > .spectral.yml
 	./rules/merge-yaml >> .spectral.yml
 
