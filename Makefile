@@ -3,7 +3,7 @@
 #
 #
 TMPDIR := $(shell mktemp  -u /tmp/fooXXXXXX)
-REPO := $(basename `git rev-parse --show-toplevel`)
+REPO := $(shell git remote get-url origin | sed -e 's/.git$$//' | xargs basename )
 
 all: setup bundle
 
@@ -14,11 +14,12 @@ bundle: bundle/js/bootstrap-italia.min.js bundle/out.js index.html spectral.yml
 bundle/out.js: index.js package.json setup
 	npx browserify --outfile bundle/out.js --standalone api_oas_checker index.js
 
-gh-pages: bundle rules
+gh-pages:  # bundle rules
 	rm css js asset svg -fr
 	git clone . $(TMPDIR) -b gh-pages
 	cp bundle/index.html bundle/spectral.yml bundle/out.js $(TMPDIR)
-	sed -i 's,href="svg/sprite.svg,href="$(REPO)/svg/sprite.svg,' $(TMPDIR)/index.html
+	echo $(REPO)
+	sed -i 's,href="/svg/sprite.svg,href="$(REPO)/svg/sprite.svg,' $(TMPDIR)/index.html
 	git -C $(TMPDIR) add index.html out.js spectral.yml
 	git -C $(TMPDIR) -c user.name="gh-pages bot" -c user.email="gh-bot@example.it" \
 		commit -m "Script updating gh-pages from $(shell git rev-parse short HEAD). [ci skip]"
