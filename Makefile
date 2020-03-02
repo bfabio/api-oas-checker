@@ -48,7 +48,7 @@ clean:
 	npm link
 	npm link api-oas-checker
 
-setup: /usr/local/lib/node_modules/api-oas-checker package.json
+setup: package.json
 	# XXX to make it work after link you need to run twice npm install
 	npm install .
 	npm install .
