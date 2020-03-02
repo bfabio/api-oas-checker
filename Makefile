@@ -3,6 +3,7 @@
 #
 #
 TMPDIR := $(shell mktemp  -u /tmp/fooXXXXXX)
+REPO := $(basename `git rev-parse --show-toplevel`)
 
 all: setup bundle
 
@@ -17,6 +18,7 @@ gh-pages: bundle rules
 	rm css js asset svg -fr
 	git clone . $(TMPDIR) -b gh-pages
 	cp bundle/index.html bundle/spectral.yml bundle/out.js $(TMPDIR)
+	sed -i 's,href="svg/sprite.svg,href="$(REPO)/svg/sprite.svg,' $(TMPDIR)/index.html
 	git -C $(TMPDIR) add index.html out.js spectral.yml
 	git -C $(TMPDIR) -c user.name="gh-pages bot" -c user.email="gh-bot@example.it" \
 		commit -m "Script updating gh-pages from $(shell git rev-parse short HEAD). [ci skip]"
