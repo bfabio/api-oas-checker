@@ -96,7 +96,7 @@ async function parse_text(){
 }
 
 async function lint_spec(oas) {
-	const lint = await api_oas_linter.parse(oas);
+	const lint = await api_oas_linter.parse(oas, window.location.origin + '/.spectral.yml');
 	console.log("lint: ", lint);
 
 	// mark errored lines
@@ -202,7 +202,7 @@ function show_error(line, ch) {
 	usando <a href="https://github.com/stoplightio/spectral">Spectral</a>.
 	Il file con le regole è
 	<a class="navbar-brand py-2 text-decoration-none"
-   		href="https://raw.githubusercontent.com/ioggstream/oas-spectral-validator/master/.spectral.yml">.spectral.yml</a>
+   		href=".spectral.yml">.spectral.yml</a>
 	Scarica le specifiche usando "Lint URL" e modificale nell'editor
 	oppure incollale direttamente nell'editor.
 <b>Attenzione: scaricando un nuovo URL sostituirai il contenuto dell'editor.</b>

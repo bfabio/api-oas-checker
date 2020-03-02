@@ -7,8 +7,8 @@ TMPDIR := $(shell mktemp  -u /tmp/fooXXXXXX)
 all: setup bundle
 
 # Create the web pages in bundle/
-bundle: bundle/js/bootstrap-italia.min.js bundle/out.js index.html
-	cp index.html bundle
+bundle: bundle/js/bootstrap-italia.min.js bundle/out.js index.html .spectral.yml
+	cp index.html .spectral.yml bundle
 
 bundle/out.js: index.js package.json
 	npx browserify --outfile bundle/out.js --standalone api_oas_linter index.js
