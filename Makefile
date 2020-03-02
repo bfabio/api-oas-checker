@@ -11,7 +11,7 @@ bundle: bundle/js/bootstrap-italia.min.js bundle/out.js index.html
 	cp index.html bundle
 
 bundle/out.js: index.js package.json
-	npx browserify --outfile bundle/out.js --standalone browserify_hello_world index.js
+	npx browserify --outfile bundle/out.js --standalone api_oas_linter index.js
 
 gh-pages: bundle rules
 	rm css js asset svg -fr
